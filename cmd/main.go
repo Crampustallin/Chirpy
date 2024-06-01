@@ -8,6 +8,7 @@ import (
 func main() {
 	const port = "8080"
 	serveMux := http.NewServeMux()
+	serveMux.Handle("/", http.FileServer(http.Dir("./web")))
 	server := http.Server{
 		Addr:    ":" + port,
 		Handler: serveMux,
