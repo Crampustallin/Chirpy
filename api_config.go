@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
-	"strconv"
 )
 
 type ApiConfig struct {
@@ -17,8 +17,17 @@ func (cfg *ApiConfig) middlewareMetricsInc(next http.Handler) http.Handler {
 }
 
 func (cfg *ApiConfig) metricsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Hits: " + strconv.Itoa(cfg.fileServerHits)))
+	w.Write([]byte(fmt.Sprintf(`
+	<html>
+
+	<body>
+		<h1>Welcome, Chirpy Admin</h1>
+		<p>Chirpy has been visited %d times!</p>
+	</body>
+	</html>
+	`, cfg.fileServerHits)))
 }
 
 func (cfg *ApiConfig) resetHandler(w http.ResponseWriter, r *http.Request) {
